@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Simplyfy</title>
+    <link rel="icon" sizes="48x48" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" id="dashboard-link" class="active">Dashboard</a>
+            <a href="setbudget.html" id="setbudget-link">Set Budget</a>
+            <a href="addexpense.html" id="addexpense-link">Add Expense</a>
+            <a href="viewexpense.html" id="viewexpense-link">View Expenses</a>
+            <a href="financialadvice.html" id="financialadvise-link">Financial Advice</a>
+            <a href="emicalculator.html" id="emicalculator-link">EMI Calculator</a>
+            <a href="support.html" id="support-link">Support</a>
+            <a href="index.html" id="logout-link">Logout</a> <!-- Logout link -->
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Welcome, <span id="user-name"></span>!</h2> <!-- User's name will be displayed here -->
+
+        <div class="features">
+            <div class="feature-card" id="add-budget">
+                <h3>Add Budget</h3>
+                <p>Set your monthly budget to track your finances.</p>
+            </div>
+            <div class="feature-card" id="add-expense">
+                <h3>Add Expense</h3>
+                <p>Easily add your daily expenses and categorize them.</p>
+            </div>
+            <div class="feature-card" id="view-expenses">
+                <h3>View Expenses</h3>
+                <p>Get an overview of your expenses over time.</p>
+            </div>
+            <div class="feature-card" id="pdf-report">
+                <h3>PDF Report</h3>
+                <p>Generate a detailed PDF report for your expenses.</p>
+            </div>
+            <div class="feature-card" id="financial-advice">
+                <h3>Financial Advice</h3>
+                <p>Get expert advice to help you manage your finances.</p>
+            </div>
+            <div class="feature-card" id="support">
+                <h3>Support</h3>
+                <p>Need help? Chat with our support bot for assistance.</p>
+            </div>
+            <div class="feature-card" id="emi-calculator">
+                <h3>EMI Calculator</h3>
+                <p>Calculate your EMI for loans or credit.</p>
+            </div>
+            <div class="feature-card" id="logout">
+                <h3>Logout</h3>
+                <p>Whenever you are good to go.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle the logout
+        document.getElementById('logout-link').addEventListener('click', () => {
+            localStorage.removeItem('token'); // Remove token from localStorage
+            window.location.href = 'index.html'; // Redirect to home page
+        });
+
+        // Display user's name (you can fetch it from the API or localStorage if necessary)
+        const userName = localStorage.getItem('userName') || "User"; // Replace with actual user name if available
+        document.getElementById('user-name').innerText = userName;
+    </script>
+    <script src="js/theme.js"></script>
+</body>
+</html>

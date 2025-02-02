@@ -1,0 +1,217 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Light Mode (Default) */
+:root {
+    --bg-color: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    --text-color: #333;
+    --navbar-bg: rgba(255, 255, 255, 0.9);
+    --container-bg: white;
+    --button-bg: linear-gradient(45deg, #ffbc00, #ff7b00);
+    --button-hover: #e0a800;
+    --border-color: #ddd;
+}
+
+/* Dark Mode */
+.dark-mode {
+    --bg-color: linear-gradient(135deg, #1e1e1e, #121212);
+    --text-color: #f1f1f1;
+    --navbar-bg: rgba(30, 30, 30, 0.9);
+    --container-bg: #252525;
+    --button-bg: linear-gradient(45deg, #ff9d00, #ff5400);
+    --button-hover: #c78e00;
+    --border-color: #444;
+}
+
+/* Apply Theme */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+    justify-content: center;
+    background: var(--navbar-bg);
+    padding: 12px 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 90%;
+    transition: background 0.3s ease;
+}
+
+.navbar a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;  /* Matches setbudget.css */
+    font-weight: 600; /* Matches setbudget.css */
+    padding: 10px 15px; /* Consistent spacing */
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #3A86FF;
+    text-shadow: 0px 0px 10px rgba(58, 134, 255, 0.5);
+}
+
+/* Dark Mode Toggle Button */
+#theme-toggle {
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #57CC99, #3A86FF);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    margin-left: auto;
+}
+
+#theme-toggle:hover {
+    box-shadow: 0px 0px 8px rgba(58, 134, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* EMI Calculator Section */
+.calculator-container {
+    background: var(--container-bg);
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 700px;
+    margin: 50px auto;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.calculator-container h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #3A86FF, #57CC99);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+.calculator-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Input Section */
+.input-section {
+    text-align: left;
+}
+
+.slider-group {
+    margin-bottom: 15px;
+}
+
+.slider-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.slider-group input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.slider-group input[type="range"]:hover {
+    background: #3A86FF;
+}
+
+.slider-group span {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* EMI Result Section */
+.result-section {
+    margin-top: 20px;
+}
+
+.result-section h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.emi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3A86FF;
+    margin-bottom: 20px;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+/* CTA Button */
+.cta-btn {
+    padding: 12px 20px;
+    background: linear-gradient(45deg, #3A86FF, #57CC99);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.cta-btn:hover {
+    background: linear-gradient(45deg, #3A86FF, #57CC99);
+    transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    background: var(--navbar-bg);
+    text-align: center;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #theme-toggle {
+        margin: 10px 0 0;
+    }
+
+    .calculator-container {
+        padding: 30px;
+    }
+}

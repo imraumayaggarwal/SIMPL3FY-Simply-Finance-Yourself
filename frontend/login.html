@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Simplyfy</title>
+    <link rel="icon" sizes="48x48" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" id="home-link">Home</a>
+            <a href="register.html" id="signup-link">Register</a>
+            <a href="login.html" id="login-link" class="active">Login</a>
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <table>
+                <tr>
+                    <td><label for="email">Email:</label></td>
+                    <td><input type="email" id="email" placeholder="Enter Email" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="password" placeholder="Enter Password" required></td>
+                </tr>
+            </table>
+            <button type="submit" class="auth-button">Login</button>
+        </form>
+        <p>Don't have an account? <a href="register.html" id="sign-up-link">Sign up here</a>.</p>
+    </div>
+
+    <!-- Include API script here -->
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" sizes="48x48" href="favicon-16x16.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/setbudget.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <title>Finance Tracker & Manager </title>
+  </head>
+
+  <body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" id="dashboard-link">Dashboard</a>
+            <a href="setbudget.html" id="setbudget-link" class="active">Set Budget</a>
+            <a href="addexpense.html" id="addexpense-link">Add Expense</a>
+            <a href="viewexpense.html" id="viewexpense-link">View Expenses</a>
+            <a href="financialadvice.html" id="financialadvise-link">Financial Advice</a>
+            <a href="emicalculator.html" id="emicalculator-link">EMI Calculator</a>
+            <a href="support.html" id="support-link">Support</a>
+            <a href="index.html" id="logout-link">Logout</a> <!-- Logout link -->
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+    
+    <section class="main-content" id="tracker">
+      <div class="head-text">
+        <h1>Set Your Personal Finance Budget</h1>
+        <div class="under-head-text"></div>
+      </div>
+      <br />
+
+      <div class="tracker-part">
+        <div class="tracker-balance">
+          Current Budget Balance: <span id="balance" class="current-balance"></span>
+        </div>
+
+        <div class="currency-filter">
+          <div class="filter-left">
+            <label for="category">Select Category:</label>
+            <select id="category">
+              <option value="food">Food</option>
+              <option value="transport">Transport</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="personalCare">Personal Care</option>
+              <option value="education">Education</option>
+              <option value="medicines">Medicines</option>
+              <option value="clothing">Clothing</option>
+              <option value="groceries">Groceries</option>
+            </select>
+          </div>
+
+          <div class="filter-right">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" placeholder="Amount" />
+          </div>
+        </div>
+
+        <div class="transaction-form">
+          <button onclick="setBudget()">Set Budget</button>
+        </div>
+
+        <div class="table-part" id="table-part">
+          <table id="budget-table">
+            <tr>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+            <!-- Budget data will be populated here -->
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <script>
+        // Call getBudget() when the page loads to populate the table
+        document.addEventListener('DOMContentLoaded', function() {
+          getBudget(); // Fetch and display budgets on page load
+        });
+      
+        // Function to set the budget
+        async function setBudget() {
+          const category = document.getElementById('category').value;
+          const amount = document.getElementById('amount').value;
+          
+          if (!amount || amount <= 0) {
+            alert("Please enter a valid amount.");
+            return;
+          }
+      
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert("Please log in again.");
+            window.location.href = "index.html"; // Redirect to login page if no token is found
+            return;
+          }
+      
+          // Remove "Bearer " from the token if it exists
+          const cleanedToken = token.replace(/^Bearer\s/, '');
+          
+          try {
+            const response = await fetch('http://localhost:5000/api/budget', {
+              method: 'POST',
+              headers: {
+                'Authorization': cleanedToken,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ category, amount })
+            });
+      
+            const data = await response.json();
+            
+            if (response.ok) {
+              // After successful budget creation, fetch the budgets again
+              getBudget();
+              alert("Budget set successfully!");
+            } else {
+              alert(data.message || "Failed to set budget.");
+            }
+          } catch (error) {
+            console.error("Error setting budget:", error);
+            alert("An error occurred while setting the budget.");
+          }
+        }
+      </script>
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+  </body>
+</html>

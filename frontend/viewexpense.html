@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Expenses</title>
+    <link rel="stylesheet" href="css/viewexpense.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" id="dashboard-link" class="active">Dashboard</a>
+            <a href="setbudget.html" id="setbudget-link">Set Budget</a>
+            <a href="addexpense.html" id="addexpense-link">Add Expense</a>
+            <a href="viewexpense.html" id="viewexpense-link">View Expenses</a>
+            <a href="financialadvice.html" id="financialadvise-link">Financial Advice</a>
+            <a href="emicalculator.html" id="emicalculator-link">EMI Calculator</a>
+            <a href="support.html" id="support-link">Support</a>
+            <a href="index.html" id="logout-link">Logout</a>
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>View Expenses</h2>
+
+        <!-- Category Selection -->
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option value="">Select Category</option>
+        </select>
+
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" name="startDate" required>
+
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" name="endDate" required>
+
+        <button id="viewExpensesBtn">View Expenses</button>
+
+        <div id="alertMessage"></div>
+
+        <!-- Budget Information -->
+        <div id="expense-summary">
+            <p>Budget: <span id="budget-amount"></span></p>
+            <p>Total Expenses: <span id="total-expenses"></span></p>
+            <p>Remaining Budget: <span id="remaining-budget"></span></p>
+        </div>
+
+        <!-- Chart Container -->
+        <canvas id="expense-chart"></canvas>
+
+        <!-- Expenses Table -->
+        <h3>Expenses</h3>
+        <table id="expenseTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Expenses will be populated here -->
+            </tbody>
+        </table>
+
+        <!-- Button to Download PDF Report -->
+        <button id="downloadPDFBtn">Download PDF Report</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryDropdown = document.getElementById("category");
+            const startDateInput = document.getElementById("startDate");
+            const endDateInput = document.getElementById("endDate");
+            const viewExpensesBtn = document.getElementById("viewExpensesBtn");
+            const downloadPDFBtn = document.getElementById("downloadPDFBtn");
+            const expenseTableBody = document.querySelector("#expenseTable tbody");
+            const alertMessage = document.getElementById("alertMessage");
+            const budgetAmountElem = document.getElementById("budget-amount");
+            const totalExpensesElem = document.getElementById("total-expenses");
+            const remainingBudgetElem = document.getElementById("remaining-budget");
+            const expenseChartCanvas = document.getElementById('expense-chart'); // Corrected to match the canvas id
+            const ctx = expenseChartCanvas.getContext('2d');  // Ensure the canvas is valid
+    
+            // Function to fetch categories
+            async function fetchCategories() {
+                try {
+                    const token = localStorage.getItem("token");
+                    const response = await fetch("http://localhost:5000/api/budget/categories", {
+                        headers: { "Authorization": token }
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        categoryDropdown.innerHTML = '<option value="">Select Category</option>';
+                        data.categories.forEach(category => {
+                            const option = document.createElement("option");
+                            option.value = category;
+                            option.textContent = category;
+                            categoryDropdown.appendChild(option);
+                        });
+                    } else {
+                        console.error("Error fetching categories:", data.message);
+                    }
+                } catch (error) {
+                    console.error("Error fetching categories:", error);
+                }
+            }
+    
+            // Function to render the chart with data
+            function renderChart(graphData) {
+                const chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: graphData.labels,
+                        datasets: [
+                            {
+                                label: "Expenses",
+                                data: graphData.expenses,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                fill: false
+                            },
+                            {
+                                label: "Budget",
+                                data: graphData.budget,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+    
+                // After rendering the chart, capture it as a base64 image
+                const chartImage = expenseChartCanvas.toDataURL('image/png');
+                // Store the base64 chart image globally if needed for PDF generation
+                window.chartImage = chartImage;
+            }
+    
+            // Function to fetch and display expenses, budget, and chart
+            async function fetchExpenses() {
+                const category = categoryDropdown.value;
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+    
+                if (!category || !startDate || !endDate) {
+                    alertMessage.textContent = "Please select a category and date range.";
+                    return;
+                }
+    
+                try {
+                    const token = localStorage.getItem("token");
+                    const response = await fetch(`http://localhost:5000/api/expense/view?category=${category}&startDate=${startDate}&endDate=${endDate}`, {
+                        headers: { "Authorization": token }
+                    });
+                    const data = await response.json();
+    
+                    if (response.ok) {
+                        alertMessage.textContent = "";
+                        expenseTableBody.innerHTML = "";
+                        // Update budget information
+                        budgetAmountElem.textContent = data.budget;
+                        totalExpensesElem.textContent = data.totalExpenses;
+                        remainingBudgetElem.textContent = data.remainingBudget;
+    
+                        // Populate expenses table
+                        data.expenses.forEach(expense => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = 
+                                `<td>${new Date(expense.date).toISOString().split("T")[0]}</td>
+                                 <td>${expense.amount}</td>`;
+                            expenseTableBody.appendChild(row);
+                        });
+    
+                        // Render chart
+                        renderChart(data.graphData);
+                    } else {
+                        alertMessage.textContent = data.message;
+                        expenseTableBody.innerHTML = "";
+                    }
+                } catch (error) {
+                    console.error("Error fetching expenses:", error);
+                }
+            }
+    
+            // Function to download the PDF report
+            async function downloadPDF() {
+                const category = categoryDropdown.value;
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+    
+                if (!category || !startDate || !endDate) {
+                    alertMessage.textContent = "Please select a category and date range.";
+                    return;
+                }
+    
+                try {
+                    const token = localStorage.getItem("token");
+                    // Decode the token to extract userId (assuming you use JWT)
+                    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+                    const userId = decodedToken.userId;
+                    const response = await fetch("http://localhost:5000/api/pdf/generate-pdf", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": token,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            category,
+                            startDate,
+                            endDate,
+                            userId: userId  // Pass the actual userId here
+                        })
+                    });
+    
+                    if (response.ok) {
+                        // Trigger download directly from the response blob
+                        const blob = await response.blob();
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "expense_report.pdf";
+                        link.click();
+                    } else {
+                        alertMessage.textContent = "Error generating PDF.";
+                    }
+                } catch (error) {
+                    console.error("Error downloading PDF:", error);
+                    alertMessage.textContent = "Error downloading PDF.";
+                }
+            }
+    
+            // Event Listeners
+            viewExpensesBtn.addEventListener("click", fetchExpenses);
+            downloadPDFBtn.addEventListener("click", downloadPDF);
+    
+            // Initial category load
+            fetchCategories();
+        });
+    </script>
+    <script src="js/theme.js"></script>
+</body>
+</html>

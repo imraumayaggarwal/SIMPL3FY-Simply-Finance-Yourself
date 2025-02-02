@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense</title>
+    <link rel="stylesheet" href="css/addexpense.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" id="dashboard-link" class="active">Dashboard</a>
+            <a href="setbudget.html" id="setbudget-link">Set Budget</a>
+            <a href="addexpense.html" id="addexpense-link">Add Expense</a>
+            <a href="viewexpense.html" id="viewexpense-link">View Expenses</a>
+            <a href="financialadvice.html" id="financialadvise-link">Financial Advice</a>
+            <a href="emicalculator.html" id="emicalculator-link">EMI Calculator</a>
+            <a href="support.html" id="support-link">Support</a>
+            <a href="index.html" id="logout-link">Logout</a> <!-- Logout link -->
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Add Expense</h2>
+
+        <!-- Expense Form -->
+        <form id="expenseForm">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="">Select Category</option>
+                <!-- Categories will be dynamically populated -->
+            </select>
+
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" required>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <button type="submit">Add Expense</button>
+        </form>
+        <br>
+        <div id="alertMessage"></div> <!-- Message alert -->
+
+        <h3>Expenses</h3>
+        <table id="expenseTable">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Expenses will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch the user's token from localStorage
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "index.html"; // Redirect to login page if no token
+        }
+
+        // Show Alert Message
+        function showAlert(message, type) {
+            const alertMessage = document.getElementById("alertMessage");
+            alertMessage.textContent = message;
+            alertMessage.className = type; // "success" or "error"
+        }
+
+        // Clear the form fields after successful submission
+        function clearForm() {
+            document.getElementById("category").value = "";
+            document.getElementById("amount").value = "";
+            document.getElementById("date").value = "";
+        }
+
+        // Fetch categories that the user has set a budget for
+        async function getCategories() {
+            try {
+                const response = await fetch("http://localhost:5000/api/budget/categories", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": token
+                    }
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    const categories = result.categories || [];
+                    return categories;
+                } else {
+                    showAlert(result.message, "error");
+                    return [];
+                }
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                showAlert("Failed to fetch categories.", "error");
+                return [];
+            }
+        }
+
+        // Add an expense
+        async function addExpense(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const category = document.getElementById("category").value;
+            const amount = parseFloat(document.getElementById("amount").value);
+            let date = document.getElementById("date").value;
+
+            // Ensure the date is in the correct format (YYYY-MM-DD)
+            const formattedDate = new Date(date).toISOString().split('T')[0]; // Converts to YYYY-MM-DD format
+
+            // Form validation
+            if (!category || isNaN(amount) || amount <= 0 || !formattedDate) {
+                showAlert("Please fill in all fields correctly.", "error");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:5000/api/expense/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": token
+                    },
+                    body: JSON.stringify({ category, amount, date: formattedDate })  // Pass formatted date
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    showAlert(result.message, "success");
+                    getExpenses(category); // Refresh the expense list
+                    clearForm(); // Clear the form fields after successful submission
+                } else {
+                    showAlert(result.message, "error");
+                }
+            } catch (error) {
+                console.error("Error adding expense:", error);
+                showAlert("Failed to add expense.", "error");
+            }
+        }
+
+        // Fetch and display expenses for a specific category using the new route
+        async function getExpenses(category) {
+    try {
+        // Get today's date and first day of the month in YYYY-MM-DD format
+        const today = new Date();
+        const startDate = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0]; // First day of the month
+        const endDate = today.toISOString().split('T')[0]; // Today's date
+
+        // Fetch expenses with category, startDate, and endDate
+        const response = await fetch(`http://localhost:5000/api/expense/expenseByCategory?category=${encodeURIComponent(category)}&startDate=${startDate}&endDate=${endDate}`, {
+            method: "GET",
+            headers: {
+                "Authorization": token
+            }
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            const expenses = result.expenses;
+            const expenseTable = document.getElementById("expenseTable").getElementsByTagName('tbody')[0];
+            expenseTable.innerHTML = ""; // Clear existing rows
+
+            expenses.forEach((expense) => {
+                const row = expenseTable.insertRow();
+                row.setAttribute("id", expense._id); // Set row id to expense id for deletion
+                row.insertCell(0).textContent = expense.category;
+                row.insertCell(1).textContent = expense.amount;
+                const formattedDate = new Date(expense.date).toISOString().split('T')[0]; // Converts to YYYY-MM-DD format
+                row.insertCell(2).textContent = formattedDate; // Date is displayed in YYYY-MM-DD format
+                const actionCell = row.insertCell(3);
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = () => deleteExpenseById(expense._id);  // Use the specific expenseId
+                actionCell.appendChild(deleteButton);
+            });
+        } else {
+            showAlert(result.message, "error");
+        }
+    } catch (error) {
+        console.error("Error fetching expenses:", error);
+        showAlert("Failed to fetch expenses.", "error");
+    }
+}
+
+
+        // Delete expense by ID
+        async function deleteExpenseById(expenseId) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/expense/delete/${expenseId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": token
+                    }
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    showAlert(result.message, "success");
+                    const row = document.getElementById(expenseId);
+                    row.remove();  // Remove the expense row immediately from the table
+                } else {
+                    showAlert(result.message, "error");
+                }
+            } catch (error) {
+                console.error("Error deleting expense:", error);
+                showAlert("Failed to delete expense.", "error");
+            }
+        }
+
+        // Fetch categories and populate the dropdown when page loads
+        document.addEventListener("DOMContentLoaded", async () => {
+            const categories = await getCategories();
+            const categorySelect = document.getElementById("category");
+
+            categories.forEach((category) => {
+                const option = document.createElement("option");
+                option.value = category;
+                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);  // Capitalize the first letter
+                categorySelect.appendChild(option);
+            });
+        });
+
+        // Event listener for form submission
+        document.getElementById("expenseForm").addEventListener("submit", addExpense);
+    </script>
+    <script src="js/theme.js"></script>
+</body>
+</html>

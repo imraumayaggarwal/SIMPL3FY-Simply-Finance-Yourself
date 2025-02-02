@@ -1,0 +1,205 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Light Mode (Default) */
+:root {
+    --bg-color: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    --text-color: #333;
+    --navbar-bg: rgba(255, 255, 255, 0.9);
+    --container-bg: white;
+    --button-bg: linear-gradient(45deg, #ffbc00, #ff7b00);
+    --button-hover: #e0a800;
+    --border-color: #ddd;
+}
+
+/* Dark Mode */
+.dark-mode {
+    --bg-color: linear-gradient(135deg, #1e1e1e, #121212);
+    --text-color: #f1f1f1;
+    --navbar-bg: rgba(30, 30, 30, 0.9);
+    --container-bg: #252525;
+    --button-bg: linear-gradient(45deg, #ff9d00, #ff5400);
+    --button-hover: #c78e00;
+    --border-color: #444;
+}
+
+/* Apply Theme */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+    justify-content: center;
+    background: var(--navbar-bg);
+    padding: 12px 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 90%;
+    transition: background 0.3s ease;
+}
+
+.navbar a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;  /* Matches setbudget.css */
+    font-weight: 600; /* Matches setbudget.css */
+    padding: 10px 15px; /* Consistent spacing */
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #3A86FF;
+    text-shadow: 0px 0px 10px rgba(58, 134, 255, 0.5);
+}
+
+
+/* Dark Mode Toggle Button */
+#theme-toggle {
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #57CC99, #3A86FF);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    margin-left: auto;
+}
+
+#theme-toggle:hover {
+    box-shadow: 0px 0px 8px rgba(58, 134, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* Financial Advice Section */
+.financial-advice {
+    text-align: center;
+    padding: 50px;
+    background: var(--container-bg);
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 800px;
+    margin: 50px auto;
+    transition: background 0.3s ease;
+}
+
+.financial-advice h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #3A86FF, #57CC99);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+}
+
+.financial-advice p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+/* FAQ Container */
+.faq-container {
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* FAQ Item */
+.faq-item {
+    background: var(--container-bg);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+}
+
+/* Question */
+.faq-question {
+    font-weight: bold;
+    font-size: 16px;
+    color: #3A86FF;
+    flex-grow: 1;
+}
+
+/* Arrow Icon */
+.faq-item .arrow {
+    font-size: 1.5rem;
+    color: #3A86FF;
+    transition: transform 0.3s ease-in-out;
+    margin-left: 10px;
+}
+
+/* Initially Hide Answers */
+.faq-answer {
+    font-size: 15px;
+    color: var(--text-color);
+    margin-top: 10px;
+    display: none;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+}
+
+/* Expand Answer when Active */
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+.faq-item.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    background: var(--navbar-bg);
+    text-align: center;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #theme-toggle {
+        margin: 10px 0 0;
+    }
+
+    .faq-question {
+        font-size: 16px;
+    }
+
+    .faq-answer {
+        font-size: 14px;
+    }
+}

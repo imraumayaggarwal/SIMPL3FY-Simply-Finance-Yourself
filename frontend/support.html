@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinanceBot</title>
+  <link rel="icon" sizes="48x48" href="favicon-16x16.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/support.css">
+  <link href="css/support.css" rel="stylesheet">
+  <style></style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="navbar">
+        <a href="dashboard.html" id="dashboard-link" class="active">Dashboard</a>
+        <a href="setbudget.html" id="setbudget-link">Set Budget</a>
+        <a href="addexpense.html" id="addexpense-link">Add Expense</a>
+        <a href="viewexpense.html" id="viewexpense-link">View Expenses</a>
+        <a href="financialadvice.html" id="financialadvise-link">Financial Advice</a>
+        <a href="emicalculator.html" id="emicalculator-link">EMI Calculator</a>
+        <a href="support.html" id="support-link">Support</a>
+        <a href="index.html" id="logout-link">Logout</a> <!-- Logout link -->
+    </nav>
+  </header>
+  <br>
+  <br>
+
+  <!-- Informational Section -->
+  <div class="info-section">
+    <h2>Welcome to FinanceBot</h2>
+    <p>Manage your expenses, set budgets, and get personalized financial advice to make smarter money decisions.</p>
+  </div>
+
+  <!-- Chatbot Section -->
+  <div class="chatbot-container">
+    <header class="chatbot-header">
+      <h1>FinanceBot</h1>
+      <p>Your personal financial assistant</p>
+    </header>
+
+    <div id="chat-window" class="chat-window">
+      <!-- Messages will appear here -->
+
+      <!-- Typing Indicator (Initially hidden, show when bot is typing) -->
+      <div id="typing-indicator" class="typing-indicator" style="display: none;">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+
+    <div class="chat-input-container">
+      <input id="chat-input" type="text" placeholder="Ask me anything..." autocomplete="off">
+      <button id="send-button" class="send-button">Send</button>
+    </div>
+  </div>
+
+  <script src="/frontend/js/support.js"></script>
+</body>
+</html>

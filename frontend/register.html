@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Simplyfy</title>
+    <link rel="icon" sizes="48x48" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/register.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" id="home-link">Home</a>
+            <a href="register.html" id="signup-link" class="active">Register</a>
+            <a href="login.html" id="login-link">Login</a>
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Register</h2>
+        <form id="register-form">
+            <table>
+                <tr>
+                    <td><label for="name">Full Name:</label></td>
+                    <td><input type="text" id="name" placeholder="Enter Full Name" required></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email:</label></td>
+                    <td><input type="email" id="email" placeholder="Enter Email" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="password" placeholder="Enter Password" required></td>
+                </tr>
+            </table>
+            <button type="submit" class="auth-button">Register</button>
+        </form>
+        <p>Already have an account? <a href="login.html" id="login-link">Login here</a>.</p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>

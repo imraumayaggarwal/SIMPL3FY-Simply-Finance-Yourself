@@ -1,0 +1,267 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* Light Mode (Default) */
+:root {
+    --bg-color: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    --text-color: #333;
+    --navbar-bg: rgba(255, 255, 255, 0.9);
+    --container-bg: white;
+    --input-bg: white;
+    --border-color: #ddd;
+    --table-bg: white;
+    --table-hover: #f1f1f1;
+    --btn-bg: linear-gradient(45deg, #57CC99, #3A86FF);
+    --btn-hover-shadow: rgba(58, 134, 255, 0.5);
+    --delete-btn-bg: linear-gradient(45deg, #ff4d4d, #ff6a6a);
+    --delete-hover-shadow: rgba(255, 77, 77, 0.5);
+}
+
+/* Dark Mode */
+.dark-mode {
+    --bg-color: linear-gradient(135deg, #1e1e1e, #121212);
+    --text-color: #f1f1f1;
+    --navbar-bg: rgba(30, 30, 30, 0.9);
+    --container-bg: #252525;
+    --input-bg: #333;
+    --border-color: #444;
+    --table-bg: #333;
+    --table-hover: #444;
+    --btn-bg: linear-gradient(45deg, #57CC99, #3A86FF);
+    --btn-hover-shadow: rgba(255, 255, 255, 0.5);
+    --delete-btn-bg: linear-gradient(45deg, #ff4d4d, #ff6a6a);
+    --delete-hover-shadow: rgba(255, 77, 77, 0.5);
+}
+
+/* Apply Theme */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background: var(--navbar-bg);
+    padding: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 90%;
+    transition: background 0.3s ease;
+}
+
+.navbar a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #3A86FF;
+    text-shadow: 0px 0px 10px rgba(58, 134, 255, 0.5);
+}
+
+/* Main Content */
+.container {
+    background: var(--container-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    margin: 30px auto;
+    animation: fadeIn 1s ease-in-out;
+    transition: background 0.3s ease;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #3A86FF, #57CC99);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: left;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    background: var(--input-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: #3A86FF;
+    box-shadow: 0px 0px 8px rgba(58, 134, 255, 0.5);
+    outline: none;
+}
+
+/* Add Expense Button */
+button {
+    padding: 12px;
+    border: none;
+    background: var(--btn-bg);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 15px var(--btn-hover-shadow);
+}
+
+/* Expense Table */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--table-bg);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background: #3A86FF;
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    background: var(--table-bg);
+    color: var(--text-color);
+}
+
+tr:hover {
+    background: var(--table-hover);
+}
+
+/* Delete Button */
+.delete-btn {
+    background: var(--delete-btn-bg);
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0px 3px 8px var(--delete-hover-shadow);
+}
+
+.delete-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 12px var(--delete-hover-shadow);
+}
+
+/* Alert Messages */
+#alertMessage {
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    display: none;
+}
+
+.success {
+    background: #57CC99;
+    color: white;
+    display: block;
+}
+
+.error {
+    background: #ff4d4d;
+    color: white;
+    display: block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    padding: 9px 15px;
+    background: linear-gradient(45deg, #57CC99, #3A86FF);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    margin-left: auto;
+}
+
+#theme-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 8px rgba(58, 134, 255, 0.5);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+    
+    .navbar {
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .navbar a {
+        margin: 5px;
+    }
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker & Manager</title>
+    <!-- Favicon Link -->
+    <link rel="icon" sizes="48x48" href="favicon-16x16.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/emi.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" id="dashboard-link" class="active">Dashboard</a>
+            <a href="setbudget.html" id="setbudget-link">Set Budget</a>
+            <a href="addexpense.html" id="addexpense-link">Add Expense</a>
+            <a href="viewexpense.html" id="viewexpense-link">View Expenses</a>
+            <a href="financialadvice.html" id="financialadvise-link">Financial Advice</a>
+            <a href="emicalculator.html" id="emicalculator-link">EMI Calculator</a>
+            <a href="support.html" id="support-link">Support</a>
+            <a href="index.html" id="logout-link">Logout</a> <!-- Logout link -->
+            <button id="theme-toggle">Dark Mode</button>
+        </nav>
+    </header>
+
+    <div class="calculator-container">
+        <h2>Personal Loan EMI Calculator</h2>
+        <div class="calculator-content">
+            <div class="input-section">
+                <div class="slider-group">
+                    <label for="loanAmount">Loan Amount</label>
+                    <input type="range" id="loanAmount" min="100000" max="10000000" step="100000" value="2500000" />
+                    <span>₹ <span id="loanAmountValue">2500000</span></span>
+                </div>
+
+                <div class="slider-group">
+                    <label for="loanTenure">Tenure (Years)</label>
+                    <input type="range" id="loanTenure" min="1" max="30" step="1" value="15" />
+                    <span><span id="loanTenureValue">15</span> Years</span>
+                </div>
+
+                <div class="slider-group">
+                    <label for="interestRate">Interest Rate (% P.A.)</label>
+                    <input type="range" id="interestRate" min="0.5" max="15" step="0.1" value="8.75" />
+                    <span><span id="interestRateValue">8.75</span> %</span>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h3>Monthly Personal Loan EMI</h3>
+                <div class="emi-value" id="emiValue">₹ 19,668</div>
+                <canvas id="emiChart"></canvas>
+                <a href="support.html">
+                    <button class="cta-btn">Talk To Our Expert Chat Bot</button>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="js/emi.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
